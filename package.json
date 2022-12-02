@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "yarn run relay-compiler && react-scripts start",
+    "start": "yarn run relay-compiler && DANGEROUSLY_DISABLE_HOST_CHECK=true react-scripts start",
     "build": "react-scripts build",
     "relay": "yarn run relay-compiler"
   },
@@ -31,7 +31,11 @@
     "extends": "react-app"
   },
   "browserslist": {
-    "production": [">0.2%", "not dead", "not op_mini all"],
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
@@ -43,7 +47,9 @@
   "relay": {
     "src": "./src/",
     "schema": "./src/schema.graphql",
-    "exclude": ["**/node_modules/**"],
+    "exclude": [
+      "**/node_modules/**"
+    ],
     "artifactDirectory": "src/__generated__",
     "language": "typescript"
   }

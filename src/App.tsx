@@ -1,37 +1,43 @@
-import React from "react";
+import * as React from "react";
 import "./App.css";
-import { RelayEnvironmentProvider } from "react-relay";
+import graphql from "babel-plugin-relay/macro";
+import { RelayEnvironmentProvider, useLazyLoadQuery } from "react-relay";
 import RelayEnvironment from "./RelayEnvironment";
-import Header from "./Header";
-import Guide from "./Guide";
-import Countries from "./Countries";
-
-const { Suspense } = React;
 
 function App() {
-  return (
-    <div className="App">
-      <Header />
-      <div className="col50">
-        <div className="pad-md">
-          <Guide />
-        </div>
-      </div>
-      <div className="col50">
-        <div className="pad-md">
-          <Countries />
-        </div>
-      </div>
-    </div>
+  const data = useLazyLoadQuery(
+    graphql`
+      query AppQuery {
+        continents {
+          code
+          name
+          countries {
+            name
+          }
+        }
+        countries {
+          name
+          languages {
+            name
+          }
+        }
+      }
+    `,
+    {},
+    { fetchPolicy: "store-and-network" }
   );
+
+  console.log({ data });
+
+  return null;
 }
 
 export default function AppRoot() {
   return (
     <RelayEnvironmentProvider environment={RelayEnvironment}>
-      <Suspense fallback={"Loading Continent/Country Data..."}>
+      <React.Suspense fallback={"Loading Continent/Country Data..."}>
         <App />
-      </Suspense>
+      </React.Suspense>
     </RelayEnvironmentProvider>
   );
 }
